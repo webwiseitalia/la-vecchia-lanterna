@@ -53,10 +53,10 @@ export default function Footer() {
 
       <div className="px-6 md:px-12 py-16 md:py-24">
         {/* Top Section - Broken Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-6 text-center lg:text-left">
           {/* Logo & Tagline - Offset */}
           <div className="lg:col-span-5 footer-reveal">
-            <div className="flex items-start gap-4 mb-8">
+            <div className="flex flex-col items-center lg:flex-row lg:items-start gap-4 mb-8">
               <svg viewBox="0 0 100 100" className="w-16 h-16 flex-shrink-0">
                 <rect x="30" y="30" width="40" height="50" rx="5" fill="#D4AF37"/>
                 <ellipse cx="50" cy="55" rx="8" ry="12" fill="#FFF8DC" opacity="0.7"/>
@@ -67,7 +67,7 @@ export default function Footer() {
                 <p className="text-[var(--color-gold)] font-accent text-xl">di Temù</p>
               </div>
             </div>
-            <p className="text-[var(--color-cream)] text-body-lg max-w-md leading-relaxed">
+            <p className="text-[var(--color-cream)] text-body-lg max-w-md mx-auto lg:mx-0 leading-relaxed">
               Un'osteria tradizionale nel cuore delle Alpi, dove ogni piatto racconta
               la storia della nostra valle.
             </p>
@@ -81,12 +81,12 @@ export default function Footer() {
             <h4 className="text-[var(--color-gold)] text-xs uppercase tracking-[0.2em] mb-6">
               Navigazione
             </h4>
-            <nav className="space-y-3">
+            <nav className="flex flex-wrap justify-center gap-4 lg:block lg:space-y-3">
               {['Home', 'Chi Siamo', 'Menu', 'Galleria', 'Contatti'].map((item) => (
                 <Link
                   key={item}
                   to={item === 'Home' ? '/' : `/${item.toLowerCase().replace(' ', '-')}`}
-                  className="block text-[var(--color-cream)] hover:text-[var(--color-gold)] transition-colors text-sm"
+                  className="text-[var(--color-cream)] hover:text-[var(--color-gold)] transition-colors text-sm"
                 >
                   {item}
                 </Link>
@@ -120,13 +120,13 @@ export default function Footer() {
         </div>
 
         {/* Divider with offset */}
-        <div className="my-16 ml-[10%] mr-[20%] h-px bg-gradient-to-r from-[var(--color-gold)]/30 via-[var(--color-gold)]/10 to-transparent footer-reveal" />
+        <div className="my-12 md:my-16 mx-4 md:ml-[10%] md:mr-[20%] h-px bg-gradient-to-r from-[var(--color-gold)]/30 via-[var(--color-gold)]/10 to-transparent footer-reveal" />
 
         {/* Bottom Section */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 footer-reveal">
+        <div className="flex flex-col md:flex-row justify-between items-center md:items-end gap-8 footer-reveal text-center md:text-left">
           {/* Social */}
           <div>
-            <div className="flex gap-6 mb-4">
+            <div className="flex justify-center md:justify-start gap-6 mb-4">
               <a
                 href="https://instagram.com/lavecchialanterna2023"
                 target="_blank"
@@ -158,11 +158,11 @@ export default function Footer() {
           </div>
 
           {/* Copyright */}
-          <div className="text-right">
+          <div className="md:text-right">
             <p className="text-[var(--color-cream)] text-xs">
               © {currentYear} La Vecchia Lanterna di Temù
             </p>
-            <div className="flex gap-4 mt-2 justify-end">
+            <div className="flex gap-4 mt-2 justify-center md:justify-end">
               <Link to="/privacy-policy" className="text-[var(--color-cream)] hover:text-[var(--color-gold)] text-xs transition-colors">
                 Privacy
               </Link>

@@ -180,7 +180,7 @@ export default function Home() {
             style={{ marginLeft: '-0.05em' }}
           >
             La Vecchia<br />
-            <span className="ml-[15vw] inline-block">Lanterna</span>
+            <span className="ml-[8vw] md:ml-[15vw] inline-block">Lanterna</span>
           </h1>
 
           {/* Tagline - offset right */}
@@ -188,12 +188,12 @@ export default function Home() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.8, duration: 1 }}
-            className="mt-8 ml-auto mr-[5vw] max-w-md text-right"
+            className="mt-6 md:mt-8 text-right"
           >
-            <p className="text-[var(--color-cream)] text-body-lg">
+            <p className="text-[var(--color-cream)] text-sm md:text-body-lg">
               Ristorante • Pizzeria • Bar
             </p>
-            <p className="text-[var(--color-cream)] text-sm mt-2">
+            <p className="text-[var(--color-cream)] text-xs md:text-sm mt-1 md:mt-2">
               Alta Valle Camonica
             </p>
           </motion.div>
@@ -203,20 +203,20 @@ export default function Home() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 2.2, duration: 1 }}
-            className="mt-12 flex flex-wrap gap-4 items-center"
+            className="mt-8 md:mt-12 flex flex-col sm:flex-row gap-4 sm:items-center"
           >
             <a
               href="https://www.bookta.it/pizzerialavecchialanternaditemu"
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-creative"
+              className="btn-creative justify-center"
             >
               Prenota Ora
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </a>
-            <Link to="/menu" className="group relative inline-flex items-center gap-3 px-8 py-4 border-2 border-[var(--color-cream)] text-[var(--color-cream)] font-semibold text-sm uppercase tracking-widest ml-8 overflow-hidden transition-all duration-500 hover:border-[var(--color-gold)]">
+            <Link to="/menu" className="group relative inline-flex items-center justify-center gap-3 px-6 md:px-8 py-3 md:py-4 border-2 border-[var(--color-cream)] text-[var(--color-cream)] font-semibold text-sm uppercase tracking-widest overflow-hidden transition-all duration-500 hover:border-[var(--color-gold)]">
               <span className="absolute inset-0 bg-[var(--color-gold)] transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
               <span className="relative z-10 group-hover:text-[var(--color-wood-dark)] transition-colors duration-500">Menu</span>
               <svg className="relative z-10 w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300 group-hover:text-[var(--color-wood-dark)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -245,9 +245,9 @@ export default function Home() {
             <p className="text-[var(--color-gold)] text-xs uppercase tracking-[0.3em] mb-6">
               — Benvenuti
             </p>
-            <h2 className="text-display text-[var(--color-wood-dark)] mb-8">
+            <h2 className="text-display text-[var(--color-wood-dark)] mb-6 md:mb-8">
               Un'osteria<br />
-              <span className="ml-12">nel cuore</span><br />
+              <span className="ml-4 md:ml-12">nel cuore</span><br />
               delle montagne
             </h2>
             <p className="text-body-lg text-[var(--color-coffee)]/70 max-w-md leading-relaxed">
@@ -277,11 +277,11 @@ export default function Home() {
             </div>
             {/* Floating accent */}
             <div
-              className="absolute -bottom-8 -left-8 bg-[var(--color-wood-dark)] text-[var(--color-cream)] p-6 md:p-8"
+              className="absolute -bottom-4 left-4 md:-bottom-8 md:-left-8 bg-[var(--color-wood-dark)] text-[var(--color-cream)] p-4 md:p-8"
               style={{ transform: 'rotate(-3deg)' }}
             >
-              <p className="font-accent text-2xl text-[var(--color-gold)]">Dal cuore</p>
-              <p className="text-sm mt-1">della Valle</p>
+              <p className="font-accent text-xl md:text-2xl text-[var(--color-gold)]">Dal cuore</p>
+              <p className="text-xs md:text-sm mt-1">della Valle</p>
             </div>
           </div>
         </div>
@@ -310,10 +310,10 @@ export default function Home() {
                 <p className="text-[var(--color-gold)] text-xs uppercase tracking-[0.3em] mb-6">
                   — Tre Anime, Una Passione
                 </p>
-                <h2 className="text-massive text-[var(--color-cream)] leading-[0.9]">
+                <h2 className="text-display md:text-massive text-[var(--color-cream)] leading-[0.9]">
                   Ristorante<br />
-                  <span className="ml-[10vw] text-[var(--color-gold)]">Pizzeria</span><br />
-                  <span className="ml-[5vw]">& Bar</span>
+                  <span className="ml-[5vw] md:ml-[10vw] text-[var(--color-gold)]">Pizzeria</span><br />
+                  <span className="ml-[2vw] md:ml-[5vw]">& Bar</span>
                 </h2>
               </div>
               <div className="lg:col-span-3 lg:col-start-10 lg:flex lg:items-end">
@@ -620,7 +620,7 @@ export default function Home() {
                 <div
                   key={i}
                   className="bg-[var(--color-ivory)] p-6 md:p-8 border-l-4 border-[var(--color-gold)] hover:bg-[var(--color-cream)] transition-colors duration-500"
-                  style={{ marginLeft: `${i * 20}px`, transform: `rotate(${i % 2 === 0 ? 0.5 : -0.5}deg)` }}
+                  style={{ transform: `rotate(${i % 2 === 0 ? 0.5 : -0.5}deg)` }}
                 >
                   <p className="text-[var(--color-coffee)]/80 italic mb-4 leading-relaxed">
                     "{review.text}"
@@ -644,7 +644,6 @@ export default function Home() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex items-center gap-4 p-6 border border-[var(--color-cream)]/20 hover:border-[var(--color-gold)] transition-colors duration-500"
-                style={{ marginLeft: '40px' }}
               >
                 <div className="w-12 h-12 bg-[#00AF87] flex items-center justify-center text-white flex-shrink-0">
                   <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -673,30 +672,32 @@ export default function Home() {
           <img
             src={salaPietra}
             alt="Prenota"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover blur-[2px]"
           />
-          <div className="absolute inset-0 bg-[var(--color-wood-dark)]/80" />
         </div>
 
+        {/* Overlay scuro leggero per leggibilità */}
+        <div className="absolute inset-0 bg-[var(--color-wood-dark)]/50" />
+
         <div className="relative z-10 px-6 md:px-12 w-full">
-          <div className="max-w-3xl ml-auto mr-[10vw]">
-            <h2 className="text-hero text-[var(--color-cream)] mb-6 text-right">
+          <div className="max-w-3xl mx-auto md:ml-auto md:mr-[10vw] text-center md:text-right">
+            <h2 className="text-hero text-[var(--color-cream)] mb-6 drop-shadow-lg">
               Prenota il<br />
               <span className="text-[var(--color-gold)]">tuo tavolo</span>
             </h2>
-            <p className="text-[var(--color-cream)]/60 text-body-lg text-right mb-10 max-w-md ml-auto">
+            <p className="text-[var(--color-cream)] text-body-lg mb-10 max-w-md mx-auto md:ml-auto md:mr-0 drop-shadow-md">
               Ti aspettiamo a braccia aperte per creare ricordi indimenticabili.
             </p>
-            <div className="flex flex-wrap gap-4 justify-end">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-end">
               <a
                 href="https://www.bookta.it/pizzerialavecchialanternaditemu"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-creative"
+                className="btn-creative justify-center"
               >
                 Prenota Online
               </a>
-              <a href="tel:+393792102615" className="btn-outline border-[var(--color-cream)]/30 text-[var(--color-cream)] hover:bg-[var(--color-cream)] hover:text-[var(--color-wood-dark)]">
+              <a href="tel:+393792102615" className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-transparent text-white font-semibold text-sm uppercase tracking-wider border-2 border-white cursor-pointer transition-all duration-500 hover:bg-white/20">
                 Chiama Ora
               </a>
             </div>
@@ -713,20 +714,21 @@ export default function Home() {
 
       {/* MAP - Broken layout */}
       <section className="section-spacing px-6 md:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          <div className="lg:col-span-4 lg:col-start-1">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+          {/* Info - centrato su mobile */}
+          <div className="lg:col-span-4 lg:col-start-1 text-center lg:text-left">
             <p className="text-[var(--color-gold)] text-xs uppercase tracking-[0.3em] mb-4">
               — Dove Siamo
             </p>
             <h2 className="text-title text-[var(--color-wood-dark)] mb-6">
-              Vieni a<br />trovarci
+              Vieni a<br className="hidden lg:block" /> trovarci
             </h2>
-            <div className="space-y-4 text-[var(--color-coffee)]/70">
+            <div className="space-y-3 text-[var(--color-coffee)]/70">
               <p>
                 <strong className="text-[var(--color-wood-dark)]">Via Roma, 55</strong><br />
                 25050 Temù (BS)
               </p>
-              <p>
+              <p className="text-sm">
                 A pochi minuti da Ponte di Legno<br />
                 e dal Passo del Tonale
               </p>
@@ -735,7 +737,7 @@ export default function Home() {
               href="https://maps.google.com/?q=Via+Roma+55+Temù"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 mt-6 text-[var(--color-wine)] font-medium hover:gap-4 transition-all"
+              className="inline-flex items-center justify-center gap-2 mt-6 px-6 py-3 bg-[var(--color-wine)] text-[var(--color-cream)] font-medium text-sm uppercase tracking-wider hover:bg-[var(--color-wood-dark)] transition-colors lg:px-0 lg:py-0 lg:bg-transparent lg:text-[var(--color-wine)] lg:hover:bg-transparent lg:hover:gap-4"
             >
               Indicazioni
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -744,8 +746,9 @@ export default function Home() {
             </a>
           </div>
 
-          <div className="lg:col-span-8 lg:col-start-5 lg:-mt-16">
-            <div className="relative overflow-hidden h-[400px] md:h-[500px]" style={{ transform: 'rotate(-1deg)' }}>
+          {/* Mappa */}
+          <div className="lg:col-span-8 lg:col-start-5 lg:-mt-16 order-first lg:order-last">
+            <div className="relative overflow-hidden h-[280px] md:h-[500px] rounded-lg lg:rounded-none lg:-rotate-1">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2765.8963071731706!2d10.469044!3d46.248731!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDbCsDE0JzU1LjQiTiAxMMKwMjgnOC42IkU!5e0!3m2!1sit!2sit!4v1234567890"
                 width="100%"

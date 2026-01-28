@@ -87,8 +87,8 @@ export default function ChiSiamo() {
           <div className="lg:col-span-6 lg:col-start-1 reveal-section">
             <h2 className="text-display text-[var(--color-wood-dark)] mb-8">
               Un'osteria<br />
-              <span className="ml-8">nel cuore</span><br />
-              <span className="ml-16">delle Alpi</span>
+              <span className="ml-4 md:ml-8">nel cuore</span><br />
+              <span className="ml-8 md:ml-16">delle Alpi</span>
             </h2>
             <p className="text-body-lg text-[var(--color-coffee)]/70 max-w-lg leading-relaxed">
               Siamo un'accogliente osteria situata nel cuore di Temù, immersa nella bellezza
@@ -99,7 +99,7 @@ export default function ChiSiamo() {
           <div className="lg:col-span-5 lg:col-start-8 lg:-mt-32 reveal-section">
             <div className="relative" style={{ transform: 'rotate(3deg)' }}>
               <img src={salaPietra} alt="Interno" className="w-full aspect-[4/5] object-cover" />
-              <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-[var(--color-gold)]" />
+              <div className="absolute -bottom-4 -right-4 md:-bottom-6 md:-right-6 w-20 h-20 md:w-32 md:h-32 bg-[var(--color-gold)]" />
             </div>
           </div>
         </div>
@@ -140,8 +140,7 @@ export default function ChiSiamo() {
           {values.map((value, i) => (
             <div
               key={i}
-              className="value-card bg-[var(--color-cream)] p-8 border border-[var(--color-sand)]"
-              style={{ marginTop: `${(i % 2) * 40}px` }}
+              className={`value-card bg-[var(--color-cream)] p-6 md:p-8 border border-[var(--color-sand)] ${i % 2 === 1 ? 'md:mt-10' : ''}`}
             >
               <span className="text-[var(--color-gold)] text-xs font-mono">{value.num}</span>
               <h3 className="text-subtitle text-[var(--color-wood-dark)] mt-4 mb-3">{value.title}</h3>

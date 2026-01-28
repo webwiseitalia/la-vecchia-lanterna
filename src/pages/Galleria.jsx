@@ -241,7 +241,7 @@ export default function Galleria() {
               <p className="text-[var(--color-gold)] text-xs uppercase tracking-[0.3em] mb-4">— Seguici</p>
               <h2 className="text-display text-[var(--color-cream)] mb-6">
                 Altre foto<br />
-                <span className="ml-8">su Instagram</span>
+                <span className="ml-4 md:ml-8">su Instagram</span>
               </h2>
               <p className="text-[var(--color-cream)]/60 mb-8 max-w-md">
                 Per vedere le foto più recenti, i piatti del giorno e gli eventi speciali.
