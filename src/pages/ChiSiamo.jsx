@@ -1,228 +1,196 @@
+import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { motion } from 'framer-motion'
+import SplitType from 'split-type'
 
-// Import images
 import salaCamino from '../assets/foto/sala-camino-acceso.webp'
 import salaPietra from '../assets/foto/sala-ristorante-pietra-legno.webp'
 import salaEventi from '../assets/foto/sala-eventi-gruppi.webp'
 import cervoPolenta from '../assets/foto/cervo-polenta-rosmarino.webp'
 
+gsap.registerPlugin(ScrollTrigger)
+
 export default function ChiSiamo() {
+  const heroTitleRef = useRef(null)
+  const contentRef = useRef(null)
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      if (heroTitleRef.current) {
+        const split = new SplitType(heroTitleRef.current, { types: 'chars,words' })
+        gsap.fromTo(split.chars,
+          { y: 80, opacity: 0 },
+          { y: 0, opacity: 1, duration: 1, stagger: 0.02, ease: 'power4.out', delay: 0.3 }
+        )
+      }
+
+      gsap.utils.toArray('.reveal-section').forEach((section, i) => {
+        gsap.fromTo(section,
+          { opacity: 0, y: 60, rotate: i % 2 === 0 ? -2 : 2 },
+          {
+            opacity: 1, y: 0, rotate: 0, duration: 1.2, ease: 'power3.out',
+            scrollTrigger: { trigger: section, start: 'top 80%', once: true }
+          }
+        )
+      })
+
+      gsap.utils.toArray('.value-card').forEach((card, i) => {
+        gsap.fromTo(card,
+          { opacity: 0, scale: 0.9, y: 40 },
+          {
+            opacity: 1, scale: 1, y: 0, duration: 0.8, delay: i * 0.15, ease: 'back.out(1.7)',
+            scrollTrigger: { trigger: card, start: 'top 85%', once: true }
+          }
+        )
+      })
+    }, contentRef)
+
+    return () => ctx.revert()
+  }, [])
+
   const values = [
-    {
-      icon: (
-        <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      ),
-      title: 'Tradizione',
-      description: 'Ricette tramandate di generazione in generazione, sapori autentici della Valle Camonica',
-    },
-    {
-      icon: (
-        <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-        </svg>
-      ),
-      title: 'Qualità',
-      description: 'Ingredienti freschi, locali e sostenibili selezionati con cura ogni giorno',
-    },
-    {
-      icon: (
-        <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-        </svg>
-      ),
-      title: 'Ospitalità',
-      description: 'Vi accogliamo come parte della famiglia, in un ambiente caldo e conviviale',
-    },
-    {
-      icon: (
-        <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      ),
-      title: 'Territorio',
-      description: 'Il gusto autentico della Valle Camonica e delle Alpi in ogni piatto',
-    },
+    { title: 'Tradizione', desc: 'Ricette tramandate di generazione in generazione', num: '01' },
+    { title: 'Qualità', desc: 'Ingredienti freschi, locali e sostenibili', num: '02' },
+    { title: 'Ospitalità', desc: 'Vi accogliamo come parte della famiglia', num: '03' },
+    { title: 'Territorio', desc: 'Il gusto autentico della Valle Camonica', num: '04' },
   ]
 
   return (
-    <div className="min-h-screen pt-20">
-      {/* Hero Section */}
-      <section className="relative py-20 md:py-32">
+    <div ref={contentRef} className="grain">
+      {/* HERO */}
+      <section className="relative h-[70vh] md:h-[80vh] flex items-end overflow-hidden">
         <div className="absolute inset-0">
-          <img
-            src={salaCamino}
-            alt="La Vecchia Lanterna - Sala con camino"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-wood-dark/70" />
+          <img src={salaCamino} alt="La Vecchia Lanterna" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-wood-dark)] via-[var(--color-wood-dark)]/50 to-transparent" />
         </div>
-        <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
-          <p className="text-gold font-medium tracking-wider mb-4">— CHI SIAMO</p>
-          <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-cream mb-6">
-            La Nostra Storia
+        <div className="relative z-10 px-6 md:px-12 pb-16 md:pb-24 w-full">
+          <motion.p
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+            className="text-[var(--color-gold)] text-xs uppercase tracking-[0.3em] mb-4"
+          >
+            — Chi Siamo
+          </motion.p>
+          <h1 ref={heroTitleRef} className="text-hero text-[var(--color-cream)] max-w-4xl">
+            La Nostra<br />
+            <span className="ml-[10vw] inline-block text-[var(--color-gold)]">Storia</span>
           </h1>
-          <div className="decorative-line mb-6" />
-          <p className="text-cream/80 text-lg md:text-xl">
-            Tradizione, passione e sapori autentici dal cuore di Temù
-          </p>
         </div>
       </section>
 
-      {/* Story Section 1 */}
-      <section className="section-padding bg-cream">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <p className="text-gold font-medium tracking-wider mb-2">— LA NOSTRA PASSIONE</p>
-              <h2 className="font-heading text-3xl md:text-4xl text-wood-dark mb-6">
-                Un'Osteria nel Cuore delle Montagne
-              </h2>
-              <div className="decorative-line mb-6 mx-0" />
-              <p className="text-coffee/80 text-lg leading-relaxed mb-6">
-                Siamo un'accogliente osteria situata nel cuore di Temù, immersa nella bellezza
-                delle montagne dell'Alta Valle Camonica. La nostra passione per la gastronomia
-                e l'ospitalità è il motore che alimenta la nostra attività.
-              </p>
-              <p className="text-coffee/70 leading-relaxed">
-                Offriamo esperienze culinarie autentiche e indimenticabili, dove ogni piatto
-                racconta la storia del nostro territorio e delle tradizioni che ci appartengono.
-              </p>
-            </div>
-            <div className="relative">
-              <img
-                src={salaPietra}
-                alt="Interno del ristorante"
-                className="rounded-2xl shadow-2xl"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Story Section 2 */}
-      <section className="section-padding bg-ivory">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="order-2 lg:order-1">
-              <img
-                src={cervoPolenta}
-                alt="Piatto di cervo con polenta"
-                className="rounded-2xl shadow-2xl"
-              />
-            </div>
-            <div className="order-1 lg:order-2">
-              <p className="text-gold font-medium tracking-wider mb-2">— LE NOSTRE RADICI</p>
-              <h2 className="font-heading text-3xl md:text-4xl text-wood-dark mb-6">
-                Tradizione Familiare
-              </h2>
-              <div className="decorative-line mb-6 mx-0" />
-              <p className="text-coffee/80 text-lg leading-relaxed mb-6">
-                Fondata con l'amore per la tradizione e la cucina di qualità, La Vecchia Lanterna
-                ha radici profonde nella comunità locale. Da generazioni, la nostra famiglia ha
-                dedicato impegno e passione per offrire piatti deliziosi e un'atmosfera accogliente.
-              </p>
-              <p className="text-coffee/70 leading-relaxed">
-                Il nostro impegno per l'eccellenza si riflette nella varietà dei nostri servizi:
-                ristorante, pizzeria e bar, tutti uniti dalla stessa filosofia di qualità e autenticità.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Values Section */}
-      <section className="section-padding bg-cream">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <p className="text-gold font-medium tracking-wider mb-2">— I NOSTRI VALORI</p>
-            <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl text-wood-dark mb-4">
-              Cosa Ci Guida
+      {/* INTRO - Broken layout */}
+      <section className="section-spacing px-6 md:px-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          <div className="lg:col-span-6 lg:col-start-1 reveal-section">
+            <h2 className="text-display text-[var(--color-wood-dark)] mb-8">
+              Un'osteria<br />
+              <span className="ml-8">nel cuore</span><br />
+              <span className="ml-16">delle Alpi</span>
             </h2>
-            <div className="decorative-line mb-6" />
+            <p className="text-body-lg text-[var(--color-coffee)]/70 max-w-lg leading-relaxed">
+              Siamo un'accogliente osteria situata nel cuore di Temù, immersa nella bellezza
+              delle montagne dell'Alta Valle Camonica. La nostra passione per la gastronomia
+              e l'ospitalità è il motore che alimenta la nostra attività.
+            </p>
           </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {values.map((value, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-xl p-6 text-center shadow-md card-hover"
-              >
-                <div className="text-gold mb-4 flex justify-center">
-                  {value.icon}
-                </div>
-                <h3 className="font-heading text-xl text-wood-dark mb-3">{value.title}</h3>
-                <p className="text-coffee/70 text-sm">{value.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Environment Section */}
-      <section className="section-padding bg-ivory">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <p className="text-gold font-medium tracking-wider mb-2">— SOSTENIBILITÀ</p>
-              <h2 className="font-heading text-3xl md:text-4xl text-wood-dark mb-6">
-                Rispetto per l'Ambiente
-              </h2>
-              <div className="decorative-line mb-6 mx-0" />
-              <p className="text-coffee/80 text-lg leading-relaxed mb-6">
-                Siamo consapevoli dell'importanza di preservare la bellezza naturale che ci circonda.
-                Per questo ci impegniamo a utilizzare ingredienti locali e sostenibili, riducendo
-                al minimo l'impatto ambientale delle nostre operazioni.
-              </p>
-              <p className="text-coffee/70 leading-relaxed">
-                Collaboriamo con produttori locali della Valle Camonica, valorizzando i prodotti
-                del territorio e sostenendo l'economia locale.
-              </p>
-            </div>
-            <div className="relative">
-              <img
-                src={salaEventi}
-                alt="Sala eventi del ristorante"
-                className="rounded-2xl shadow-2xl"
-              />
+          <div className="lg:col-span-5 lg:col-start-8 lg:-mt-32 reveal-section">
+            <div className="relative" style={{ transform: 'rotate(3deg)' }}>
+              <img src={salaPietra} alt="Interno" className="w-full aspect-[4/5] object-cover" />
+              <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-[var(--color-gold)]" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Quote & CTA Section */}
-      <section className="relative py-20 md:py-28">
+      {/* STORIA - Split with offset */}
+      <section className="bg-[var(--color-ivory)] overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-2">
+          <div className="relative h-[50vh] lg:h-auto reveal-section">
+            <img src={cervoPolenta} alt="Piatto tradizionale" className="w-full h-full object-cover" />
+          </div>
+          <div className="px-8 md:px-16 py-16 md:py-24 reveal-section">
+            <p className="text-[var(--color-gold)] text-xs uppercase tracking-[0.3em] mb-6">— Le Nostre Radici</p>
+            <h2 className="text-title text-[var(--color-wood-dark)] mb-8">
+              Tradizione<br />Familiare
+            </h2>
+            <p className="text-body-lg text-[var(--color-coffee)]/70 leading-relaxed mb-6">
+              Fondata con l'amore per la tradizione e la cucina di qualità, La Vecchia Lanterna
+              ha radici profonde nella comunità locale. Da generazioni, la nostra famiglia ha
+              dedicato impegno e passione per offrire piatti deliziosi.
+            </p>
+            <p className="text-[var(--color-coffee)]/60 leading-relaxed">
+              Il nostro impegno per l'eccellenza si riflette nella varietà dei nostri servizi:
+              ristorante, pizzeria e bar, tutti uniti dalla stessa filosofia di autenticità.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* VALORI - Scattered cards */}
+      <section className="section-spacing px-6 md:px-12">
+        <div className="max-w-xl mb-16">
+          <p className="text-[var(--color-gold)] text-xs uppercase tracking-[0.3em] mb-4">— I Nostri Valori</p>
+          <h2 className="text-display text-[var(--color-wood-dark)]">Cosa Ci Guida</h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {values.map((value, i) => (
+            <div
+              key={i}
+              className="value-card bg-[var(--color-cream)] p-8 border border-[var(--color-sand)]"
+              style={{ marginTop: `${(i % 2) * 40}px` }}
+            >
+              <span className="text-[var(--color-gold)] text-xs font-mono">{value.num}</span>
+              <h3 className="text-subtitle text-[var(--color-wood-dark)] mt-4 mb-3">{value.title}</h3>
+              <p className="text-[var(--color-coffee)]/60 text-sm">{value.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* AMBIENTE - Full bleed image with text overlay */}
+      <section className="relative h-[80vh] flex items-center overflow-hidden reveal-section">
         <div className="absolute inset-0">
-          <img
-            src={salaCamino}
-            alt="Atmosfera del ristorante"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-wood-dark/85" />
+          <img src={salaEventi} alt="La sala" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-[var(--color-wood-dark)]/60" />
         </div>
-        <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
-          <svg className="w-12 h-12 text-gold mx-auto mb-6 opacity-50" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
-          </svg>
-          <p className="font-accent text-2xl md:text-3xl text-cream mb-8">
-            La Vecchia Lanterna è più di un luogo dove mangiare e bere; è un'esperienza
-            che vi invita a condividere momenti speciali con amici e familiari.
+        <div className="relative z-10 px-6 md:px-12 max-w-3xl">
+          <p className="text-[var(--color-gold)] text-xs uppercase tracking-[0.3em] mb-4">— Sostenibilità</p>
+          <h2 className="text-title text-[var(--color-cream)] mb-6">
+            Rispetto per<br />l'Ambiente
+          </h2>
+          <p className="text-[var(--color-cream)]/70 text-body-lg leading-relaxed">
+            Siamo consapevoli dell'importanza di preservare la bellezza naturale che ci circonda.
+            Utilizziamo ingredienti locali e sostenibili, collaborando con produttori della Valle.
           </p>
-          <div className="decorative-line mb-8" />
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        </div>
+        <div className="absolute bottom-0 right-0 pointer-events-none">
+          <p className="text-[20vw] font-heading text-[var(--color-cream)]/5 uppercase leading-none translate-y-[40%] translate-x-[10%]">
+            Valle
+          </p>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="section-spacing px-6 md:px-12 bg-[var(--color-wood-dark)]">
+        <div className="max-w-4xl mx-auto text-center reveal-section">
+          <p className="font-accent text-3xl md:text-4xl text-[var(--color-gold)] mb-8">
+            "La Vecchia Lanterna è più di un luogo dove mangiare; è un'esperienza
+            che vi invita a condividere momenti speciali."
+          </p>
+          <div className="flex flex-wrap gap-4 justify-center mt-12">
             <a
               href="https://www.bookta.it/pizzerialavecchialanternaditemu"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-wine hover:bg-wine-dark text-cream px-8 py-4 rounded-lg font-semibold transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+              className="btn-creative"
             >
-              Prenota il Tuo Tavolo
+              Prenota un Tavolo
             </a>
-            <Link
-              to="/menu"
-              className="bg-cream/10 backdrop-blur-sm border-2 border-cream/50 hover:bg-cream hover:text-wood-dark text-cream px-8 py-4 rounded-lg font-semibold transition-all duration-300"
-            >
+            <Link to="/menu" className="btn-outline border-[var(--color-cream)]/30 text-[var(--color-cream)] hover:bg-[var(--color-cream)] hover:text-[var(--color-wood-dark)]">
               Scopri il Menu
             </Link>
           </div>

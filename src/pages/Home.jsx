@@ -1,473 +1,755 @@
+import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { motion } from 'framer-motion'
+import SplitType from 'split-type'
 
-// Import images
-import salaRistoranteCamino from '../assets/foto/sala-camino-acceso.webp'
+import salaCamino from '../assets/foto/sala-camino-acceso.webp'
 import salaPietra from '../assets/foto/sala-ristorante-pietra-legno.webp'
 import pizzaDiavola from '../assets/foto/pizza-diavola-salame.webp'
 import cervoPolenta from '../assets/foto/cervo-polenta-rosmarino.webp'
 import dolciFattiCasa from '../assets/foto/dolci-fatti-casa.webp'
 import pizzaMargherita from '../assets/foto/pizza-margherita-bufala.webp'
 import gnocchiSpinaci from '../assets/foto/gnocchi-spinaci-speck.webp'
-import crostatFrutti from '../assets/foto/crostata-frutti-bosco.webp'
 import barCalice from '../assets/foto/bar-calice-liquore.webp'
+import salaEventi from '../assets/foto/sala-eventi-gruppi.webp'
+
+gsap.registerPlugin(ScrollTrigger)
 
 export default function Home() {
-  const services = [
-    {
-      title: 'Ristorante',
-      description: 'Cucina tipica di montagna con ingredienti freschi e ricette della tradizione valligiana',
-      image: cervoPolenta,
-      link: '/menu',
-    },
-    {
-      title: 'Pizzeria',
-      description: 'Pizze artigianali con impasto lievitato naturalmente e condimenti freschi selezionati',
-      image: pizzaDiavola,
-      link: '/menu',
-    },
-    {
-      title: 'Bar',
-      description: 'Drink raffinati e caffetteria in un\'atmosfera conviviale e rilassante',
-      image: barCalice,
-      link: '/contatti',
-    },
-  ]
+  const heroRef = useRef(null)
+  const heroTitleRef = useRef(null)
+  const servicesRef = useRef(null)
+  const aboutRef = useRef(null)
+  const specialtiesRef = useRef(null)
 
-  const specialties = [
-    { name: 'Cervo con Polenta', description: 'Selvaggina locale con polenta fumante', image: cervoPolenta },
-    { name: 'Pizza Margherita', description: 'Impasto leggero con bufala e basilico', image: pizzaMargherita },
-    { name: 'Gnocchi agli Spinaci', description: 'Fatti in casa con speck croccante', image: gnocchiSpinaci },
-    { name: 'Dolci della Casa', description: 'Torte e crostate preparate ogni giorno', image: dolciFattiCasa },
-  ]
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Hero title animation
+      if (heroTitleRef.current) {
+        const split = new SplitType(heroTitleRef.current, { types: 'chars' })
+        gsap.fromTo(split.chars,
+          { y: 100, opacity: 0, rotateX: -90 },
+          {
+            y: 0,
+            opacity: 1,
+            rotateX: 0,
+            duration: 1.2,
+            stagger: 0.03,
+            ease: 'power4.out',
+            delay: 0.5,
+          }
+        )
+      }
+
+      // Hero parallax
+      gsap.to('.hero-bg', {
+        yPercent: 30,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: heroRef.current,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true,
+        },
+      })
+
+      // Services section - staggered reveal
+      const serviceItems = gsap.utils.toArray('.service-item')
+      serviceItems.forEach((item, i) => {
+        gsap.fromTo(item,
+          { opacity: 0, y: 80, rotate: i % 2 === 0 ? -3 : 3 },
+          {
+            opacity: 1,
+            y: 0,
+            rotate: 0,
+            duration: 1.2,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: item,
+              start: 'top 85%',
+              once: true,
+            },
+          }
+        )
+      })
+
+      // About section - horizontal text reveal
+      gsap.fromTo('.about-title',
+        { x: -100, opacity: 0 },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 1.5,
+          ease: 'power4.out',
+          scrollTrigger: {
+            trigger: aboutRef.current,
+            start: 'top 70%',
+            once: true,
+          },
+        }
+      )
+
+      // Specialties - scale and rotate
+      const specialtyItems = gsap.utils.toArray('.specialty-item')
+      specialtyItems.forEach((item, i) => {
+        gsap.fromTo(item,
+          { scale: 0.8, opacity: 0, rotate: (i - 2) * 5 },
+          {
+            scale: 1,
+            opacity: 1,
+            rotate: 0,
+            duration: 1,
+            ease: 'back.out(1.7)',
+            scrollTrigger: {
+              trigger: item,
+              start: 'top 80%',
+              once: true,
+            },
+          }
+        )
+      })
+
+      // Marquee speed on scroll
+      gsap.to('.marquee-fast', {
+        xPercent: -50,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.marquee-section',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1,
+        },
+      })
+
+    }, heroRef)
+
+    return () => ctx.revert()
+  }, [])
 
   const reviews = [
-    {
-      text: "Pizza molto buona e leggera. Personale cortese e servizio veloce. Consigliato!",
-      author: "Marco R.",
-      source: "Google",
-      rating: 5,
-    },
-    {
-      text: "I piatti sono abbondanti e con ingredienti freschi. Personale accogliente e professionale. Consiglio questo posto.",
-      author: "Laura B.",
-      source: "TripAdvisor",
-      rating: 5,
-    },
-    {
-      text: "Pizzoccheri ottimi, cervo con polenta tenero e saporito. Strudel fantastico!",
-      author: "Giuseppe M.",
-      source: "Google",
-      rating: 5,
-    },
-    {
-      text: "Locale carino e tipico. Frequento da sempre, la pizza è davvero buonissima.",
-      author: "Francesca T.",
-      source: "Facebook",
-      rating: 5,
-    },
+    { text: "Pizza molto buona e leggera. Personale cortese.", author: "Marco R.", rating: 5 },
+    { text: "Pizzoccheri ottimi, cervo con polenta tenero e saporito.", author: "Giuseppe M.", rating: 5 },
+    { text: "Locale carino e tipico. La pizza è davvero buonissima.", author: "Francesca T.", rating: 5 },
   ]
 
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center">
-        {/* Background Image */}
-        <div className="absolute inset-0">
+    <div className="grain">
+      {/* HERO - Full viewport, broken layout */}
+      <section ref={heroRef} className="relative h-screen overflow-hidden">
+        <div className="hero-bg absolute inset-0">
           <img
-            src={salaRistoranteCamino}
-            alt="La Vecchia Lanterna - Interno del ristorante con camino"
-            className="w-full h-full object-cover"
+            src={salaCamino}
+            alt="La Vecchia Lanterna"
+            className="w-full h-[120%] object-cover img-vintage"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-wood-dark/60 via-wood-dark/40 to-wood-dark/80" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-wood-dark)]/40 via-transparent to-[var(--color-wood-dark)]" />
         </div>
 
-        {/* Hero Content */}
-        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto pt-20">
-          {/* Decorative Lantern */}
-          <div className="mb-6 animate-float">
-            <svg className="w-16 h-16 md:w-20 md:h-20 mx-auto" viewBox="0 0 100 100">
-              <rect x="30" y="30" width="40" height="50" rx="5" fill="#D4AF37"/>
-              <rect x="35" y="35" width="30" height="40" rx="3" fill="#FFD700" opacity="0.9"/>
-              <ellipse cx="50" cy="55" rx="8" ry="12" fill="#FFF8DC" opacity="0.8" className="animate-glow"/>
-              <rect x="35" y="22" width="30" height="10" rx="2" fill="#D4AF37"/>
-              <rect x="45" y="15" width="10" height="10" rx="2" fill="#D4AF37"/>
-              <path d="M 42 15 Q 50 5 58 15" stroke="#D4AF37" strokeWidth="4" fill="none" strokeLinecap="round"/>
-              <rect x="32" y="78" width="36" height="6" rx="2" fill="#D4AF37"/>
+        {/* Hero Content - Asymmetric positioning */}
+        <div className="relative z-10 h-full flex flex-col justify-end pb-[15vh] px-6 md:px-12">
+          {/* Decorative elements */}
+          <motion.div
+            initial={{ scale: 0, rotate: -180 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ delay: 1.5, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute top-[20vh] right-[10vw] w-20 h-20 md:w-32 md:h-32"
+          >
+            <svg viewBox="0 0 100 100" className="w-full h-full float-slow">
+              <rect x="30" y="30" width="40" height="50" rx="5" fill="#D4AF37" opacity="0.8"/>
+              <ellipse cx="50" cy="55" rx="8" ry="12" fill="#FFF8DC" opacity="0.6"/>
             </svg>
-          </div>
+          </motion.div>
 
-          <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-cream mb-4 drop-shadow-lg">
-            La Vecchia Lanterna
-          </h1>
-          <p className="font-accent text-2xl sm:text-3xl md:text-4xl text-gold mb-4">
+          {/* Subtitle - offset left */}
+          <motion.p
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3, duration: 1 }}
+            className="text-[var(--color-gold)] font-accent text-2xl md:text-4xl mb-4 ml-[5vw]"
+          >
             di Temù
-          </p>
-          <p className="text-cream/90 text-lg md:text-xl mb-2">
-            Ristorante • Pizzeria • Bar
-          </p>
-          <p className="text-cream/70 text-base md:text-lg mb-8 max-w-2xl mx-auto">
-            Sapori autentici della tradizione valligiana nel cuore delle montagne
-          </p>
+          </motion.p>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          {/* Main title - massive, broken lines */}
+          <h1
+            ref={heroTitleRef}
+            className="text-massive text-[var(--color-cream)] font-heading uppercase leading-[0.8]"
+            style={{ marginLeft: '-0.05em' }}
+          >
+            La Vecchia<br />
+            <span className="ml-[15vw] inline-block">Lanterna</span>
+          </h1>
+
+          {/* Tagline - offset right */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.8, duration: 1 }}
+            className="mt-8 ml-auto mr-[5vw] max-w-md text-right"
+          >
+            <p className="text-[var(--color-cream)]/70 text-body-lg">
+              Ristorante • Pizzeria • Bar
+            </p>
+            <p className="text-[var(--color-cream)]/50 text-sm mt-2">
+              Alta Valle Camonica
+            </p>
+          </motion.div>
+
+          {/* CTAs - broken alignment */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 2.2, duration: 1 }}
+            className="mt-12 flex flex-wrap gap-4 items-center"
+          >
             <a
               href="https://www.bookta.it/pizzerialavecchialanternaditemu"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-wine hover:bg-wine-dark text-cream px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300 hover:-translate-y-1 hover:shadow-xl w-full sm:w-auto"
+              className="btn-creative"
             >
-              Prenota un Tavolo
+              Prenota Ora
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
             </a>
+            <Link to="/menu" className="btn-outline ml-8">
+              Menu
+            </Link>
+          </motion.div>
+        </div>
+
+        {/* Scroll indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 3 }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        >
+          <div className="w-px h-16 bg-gradient-to-b from-[var(--color-gold)] to-transparent" />
+        </motion.div>
+      </section>
+
+      {/* INTRO - Broken grid, overlapping elements */}
+      <section className="relative section-spacing px-6 md:px-12 overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-0">
+          {/* Text block - offset */}
+          <div className="lg:col-span-5 lg:col-start-2">
+            <p className="text-[var(--color-gold)] text-xs uppercase tracking-[0.3em] mb-6">
+              — Benvenuti
+            </p>
+            <h2 className="text-display text-[var(--color-wood-dark)] mb-8">
+              Un'osteria<br />
+              <span className="ml-12">nel cuore</span><br />
+              delle montagne
+            </h2>
+            <p className="text-body-lg text-[var(--color-coffee)]/70 max-w-md leading-relaxed">
+              Siamo un'accogliente osteria immersa nella bellezza dell'Alta Valle Camonica.
+              La nostra passione per la gastronomia e l'ospitalità alimenta ogni piatto
+              che prepariamo.
+            </p>
             <Link
-              to="/menu"
-              className="bg-cream/10 backdrop-blur-sm border-2 border-cream/50 hover:bg-cream hover:text-wood-dark text-cream px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300 w-full sm:w-auto"
+              to="/chi-siamo"
+              className="inline-flex items-center gap-3 mt-8 text-[var(--color-wine)] font-medium hover:gap-5 transition-all"
             >
-              Scopri il Menu
+              Scopri la nostra storia
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
             </Link>
           </div>
 
-          {/* Quick Info */}
-          <div className="mt-12 flex flex-col sm:flex-row gap-6 justify-center items-center text-cream/80">
-            <a href="tel:+393792102615" className="flex items-center gap-2 hover:text-gold transition-colors">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-              </svg>
-              <span>379 210 2615</span>
-            </a>
-            <span className="hidden sm:block text-cream/40">|</span>
-            <a href="https://maps.google.com/?q=Via+Roma+55+Temù" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-gold transition-colors">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              <span>Via Roma, 55 - Temù (BS)</span>
-            </a>
+          {/* Image - overlapping, offset */}
+          <div className="lg:col-span-6 lg:col-start-7 lg:-mt-32 relative">
+            <div className="relative overflow-hidden" style={{ transform: 'rotate(2deg)' }}>
+              <img
+                src={salaPietra}
+                alt="Interno del ristorante"
+                className="w-full aspect-[4/5] object-cover img-contrast"
+              />
+            </div>
+            {/* Floating accent */}
+            <div
+              className="absolute -bottom-8 -left-8 bg-[var(--color-wood-dark)] text-[var(--color-cream)] p-6 md:p-8"
+              style={{ transform: 'rotate(-3deg)' }}
+            >
+              <p className="font-accent text-2xl text-[var(--color-gold)]">Dal cuore</p>
+              <p className="text-sm mt-1">della Valle</p>
+            </div>
           </div>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-          <svg className="w-8 h-8 text-cream/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-          </svg>
+        {/* Background decorative text */}
+        <div className="absolute top-1/2 -right-[10%] -translate-y-1/2 pointer-events-none">
+          <p className="text-[15vw] font-heading text-[var(--color-sand)]/20 uppercase whitespace-nowrap" style={{ writingMode: 'vertical-rl' }}>
+            Tradizione
+          </p>
         </div>
       </section>
 
-      {/* Welcome Section */}
-      <section className="section-padding bg-cream">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <p className="text-gold font-medium tracking-wider mb-2">— BENVENUTI</p>
-              <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl text-wood-dark mb-6">
-                La Vecchia Lanterna di Temù
-              </h2>
-              <div className="decorative-line mb-6 mx-0" />
-              <p className="text-coffee/80 text-lg leading-relaxed mb-6">
-                Siamo un'accogliente osteria situata nel cuore di Temù, immersa nella bellezza
-                delle montagne dell'Alta Valle Camonica. La nostra passione per la gastronomia
-                e l'ospitalità è il motore che alimenta la nostra attività, offrendo esperienze
-                culinarie autentiche e indimenticabili.
-              </p>
-              <p className="text-coffee/70 leading-relaxed mb-8">
-                Da generazioni, la nostra famiglia dedica impegno e passione per offrire
-                piatti deliziosi in un'atmosfera accogliente dove sentirsi a casa.
-              </p>
-              <Link
-                to="/chi-siamo"
-                className="inline-flex items-center gap-2 text-wine hover:text-wine-dark font-semibold transition-colors"
-              >
-                Scopri la nostra storia
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </Link>
-            </div>
-            <div className="relative">
-              <img
-                src={salaPietra}
-                alt="Interno del ristorante La Vecchia Lanterna"
-                className="rounded-2xl shadow-2xl w-full"
-              />
-              <div className="absolute -bottom-6 -left-6 bg-wood-dark text-cream p-6 rounded-xl shadow-xl hidden md:block">
-                <p className="font-accent text-2xl text-gold">Dal cuore della Valle</p>
-                <p className="text-sm mt-1">Tradizione e passione</p>
+      {/* SERVICES - Interactive showcase */}
+      <section ref={servicesRef} className="relative bg-[var(--color-wood-dark)] overflow-hidden">
+        {/* Background texture */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="1"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' }} />
+        </div>
+
+        {/* Main content */}
+        <div className="relative z-10">
+          {/* Header - Full width dramatic */}
+          <div className="px-6 md:px-12 pt-24 md:pt-32 pb-16">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+              <div className="lg:col-span-8">
+                <p className="text-[var(--color-gold)] text-xs uppercase tracking-[0.3em] mb-6">
+                  — Tre Anime, Una Passione
+                </p>
+                <h2 className="text-massive text-[var(--color-cream)] leading-[0.9]">
+                  Ristorante<br />
+                  <span className="ml-[10vw] text-[var(--color-gold)]">Pizzeria</span><br />
+                  <span className="ml-[5vw]">& Bar</span>
+                </h2>
+              </div>
+              <div className="lg:col-span-3 lg:col-start-10 lg:flex lg:items-end">
+                <p className="text-[var(--color-cream)]/50 text-sm leading-relaxed">
+                  Ogni servizio racconta la nostra passione per l'ospitalità e la tradizione della Valle Camonica.
+                </p>
               </div>
             </div>
           </div>
+
+          {/* Services - Horizontal scroll on mobile, grid on desktop */}
+          <div className="pb-24 md:pb-32">
+            <div className="flex md:grid md:grid-cols-3 gap-0 overflow-x-auto md:overflow-visible scrollbar-hide">
+              {/* Ristorante */}
+              <div className="service-item group relative flex-shrink-0 w-[85vw] md:w-auto cursor-pointer">
+                <div className="relative h-[70vh] md:h-[80vh] overflow-hidden">
+                  <img
+                    src={cervoPolenta}
+                    alt="Ristorante"
+                    className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110"
+                  />
+                  {/* Overlay gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-wood-dark)] via-[var(--color-wood-dark)]/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500" />
+
+                  {/* Number - large decorative */}
+                  <div className="absolute top-8 left-8 text-[var(--color-cream)]/10 text-[15vw] md:text-[8vw] font-heading leading-none pointer-events-none group-hover:text-[var(--color-gold)]/20 transition-colors duration-500">
+                    01
+                  </div>
+
+                  {/* Content */}
+                  <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
+                    <div className="transform group-hover:-translate-y-4 transition-transform duration-500">
+                      <h3 className="text-display text-[var(--color-cream)] mb-4">Ristorante</h3>
+                      <p className="text-[var(--color-cream)]/70 max-w-sm leading-relaxed opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-100">
+                        Cucina tipica di montagna con ingredienti freschi del territorio. Cervo, pizzoccheri, polenta e i sapori autentici della Valle Camonica.
+                      </p>
+                    </div>
+
+                    {/* Decorative line */}
+                    <div className="absolute bottom-0 left-8 right-8 h-px bg-[var(--color-gold)] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left" />
+                  </div>
+
+                  {/* Hover icon */}
+                  <div className="absolute top-8 right-8 w-12 h-12 border border-[var(--color-cream)]/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:rotate-45">
+                    <svg className="w-5 h-5 text-[var(--color-cream)] -rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              {/* Pizzeria */}
+              <div className="service-item group relative flex-shrink-0 w-[85vw] md:w-auto cursor-pointer md:-mt-16">
+                <div className="relative h-[70vh] md:h-[80vh] overflow-hidden">
+                  <img
+                    src={pizzaDiavola}
+                    alt="Pizzeria"
+                    className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-wood-dark)] via-[var(--color-wood-dark)]/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500" />
+
+                  <div className="absolute top-8 left-8 text-[var(--color-cream)]/10 text-[15vw] md:text-[8vw] font-heading leading-none pointer-events-none group-hover:text-[var(--color-gold)]/20 transition-colors duration-500">
+                    02
+                  </div>
+
+                  {/* Badge 48h */}
+                  <div className="absolute top-8 right-8 bg-[var(--color-gold)] px-4 py-2 transform -rotate-3">
+                    <span className="text-[var(--color-wood-dark)] font-heading text-sm">48h lievitazione</span>
+                  </div>
+
+                  <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
+                    <div className="transform group-hover:-translate-y-4 transition-transform duration-500">
+                      <h3 className="text-display text-[var(--color-cream)] mb-4">Pizzeria</h3>
+                      <p className="text-[var(--color-cream)]/70 max-w-sm leading-relaxed opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-100">
+                        Impasto lievitato naturalmente per 48 ore, condimenti selezionati e cottura perfetta. La vera pizza artigianale.
+                      </p>
+                    </div>
+                    <div className="absolute bottom-0 left-8 right-8 h-px bg-[var(--color-gold)] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left" />
+                  </div>
+
+                  <div className="absolute top-24 md:top-8 right-8 md:right-auto md:left-1/2 md:-translate-x-1/2 w-12 h-12 border border-[var(--color-cream)]/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:rotate-45">
+                    <svg className="w-5 h-5 text-[var(--color-cream)] -rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bar */}
+              <div className="service-item group relative flex-shrink-0 w-[85vw] md:w-auto cursor-pointer md:mt-8">
+                <div className="relative h-[70vh] md:h-[80vh] overflow-hidden">
+                  <img
+                    src={barCalice}
+                    alt="Bar"
+                    className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-wood-dark)] via-[var(--color-wood-dark)]/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500" />
+
+                  <div className="absolute top-8 left-8 text-[var(--color-cream)]/10 text-[15vw] md:text-[8vw] font-heading leading-none pointer-events-none group-hover:text-[var(--color-gold)]/20 transition-colors duration-500">
+                    03
+                  </div>
+
+                  <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
+                    <div className="transform group-hover:-translate-y-4 transition-transform duration-500">
+                      <h3 className="text-display text-[var(--color-cream)] mb-4">Bar</h3>
+                      <p className="text-[var(--color-cream)]/70 max-w-sm leading-relaxed opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-100">
+                        Caffetteria, aperitivi e drink raffinati. Il posto perfetto per iniziare o concludere la serata.
+                      </p>
+                    </div>
+                    <div className="absolute bottom-0 left-8 right-8 h-px bg-[var(--color-gold)] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left" />
+                  </div>
+
+                  <div className="absolute top-8 right-8 w-12 h-12 border border-[var(--color-cream)]/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:rotate-45">
+                    <svg className="w-5 h-5 text-[var(--color-cream)] -rotate-45" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Mobile scroll indicator */}
+            <div className="md:hidden flex justify-center gap-2 mt-6 px-6">
+              <div className="w-8 h-1 bg-[var(--color-gold)]" />
+              <div className="w-8 h-1 bg-[var(--color-cream)]/20" />
+              <div className="w-8 h-1 bg-[var(--color-cream)]/20" />
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Services Section */}
-      <section className="section-padding bg-ivory">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <p className="text-gold font-medium tracking-wider mb-2">— I NOSTRI SERVIZI</p>
-            <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl text-wood-dark mb-4">
-              Cosa Offriamo?
-            </h2>
-            <div className="decorative-line mb-6" />
+      {/* MARQUEE SECTION */}
+      <section className="marquee-section py-12 bg-[var(--color-wood-dark)] overflow-hidden">
+        <div className="marquee-fast flex whitespace-nowrap">
+          {[...Array(6)].map((_, i) => (
+            <span key={i} className="inline-flex items-center mx-8 text-[var(--color-cream)]/10 text-6xl md:text-8xl font-heading uppercase">
+              Pizzoccheri
+              <span className="inline-block w-3 h-3 rounded-full bg-[var(--color-gold)] mx-8" />
+              Cervo
+              <span className="inline-block w-3 h-3 rounded-full bg-[var(--color-wine)] mx-8" />
+              Pizza
+              <span className="inline-block w-3 h-3 rounded-full bg-[var(--color-gold)] mx-8" />
+            </span>
+          ))}
+        </div>
+      </section>
+
+      {/* ABOUT PREVIEW - Split layout */}
+      <section ref={aboutRef} className="relative">
+        <div className="grid grid-cols-1 lg:grid-cols-2">
+          {/* Image side */}
+          <div className="relative h-[60vh] lg:h-auto">
+            <img
+              src={salaEventi}
+              alt="La nostra storia"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-[var(--color-wood-dark)]/30" />
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {services.map((service, index) => (
-              <Link
-                key={index}
-                to={service.link}
-                className="group relative overflow-hidden rounded-2xl shadow-lg card-hover"
-              >
-                <div className="aspect-[4/5]">
+          {/* Content side */}
+          <div className="bg-[var(--color-wood-dark)] px-8 md:px-16 py-16 md:py-24 flex flex-col justify-center">
+            <p className="text-[var(--color-gold)] text-xs uppercase tracking-[0.3em] mb-6">
+              — La Nostra Storia
+            </p>
+            <h2 className="about-title text-display text-[var(--color-cream)] mb-8">
+              Tradizione<br />
+              <span className="text-[var(--color-gold)]">&</span> Passione
+            </h2>
+            <p className="text-[var(--color-cream)]/60 text-body-lg leading-relaxed max-w-lg mb-10">
+              Da generazioni, la nostra famiglia dedica impegno e passione per offrire
+              piatti deliziosi in un'atmosfera accogliente. Ogni ricetta racconta
+              la storia del nostro territorio.
+            </p>
+            <Link to="/chi-siamo" className="btn-outline border-[var(--color-cream)]/30 text-[var(--color-cream)] hover:bg-[var(--color-cream)] hover:text-[var(--color-wood-dark)] self-start">
+              Scopri di più
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* SPECIALTIES - Scattered layout */}
+      <section ref={specialtiesRef} className="section-spacing px-6 md:px-12 overflow-hidden">
+        <div className="text-center mb-16">
+          <p className="text-[var(--color-gold)] text-xs uppercase tracking-[0.3em] mb-4">
+            — Dal Menu
+          </p>
+          <h2 className="text-display text-[var(--color-wood-dark)]">
+            Le Nostre Specialità
+          </h2>
+        </div>
+
+        {/* Scattered grid */}
+        <div className="relative max-w-6xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            {[
+              { img: cervoPolenta, name: 'Cervo con Polenta', offset: 'md:mt-12' },
+              { img: pizzaMargherita, name: 'Pizza Margherita', offset: 'md:-mt-8' },
+              { img: gnocchiSpinaci, name: 'Gnocchi agli Spinaci', offset: 'md:mt-20' },
+              { img: dolciFattiCasa, name: 'Dolci della Casa', offset: '' },
+            ].map((item, i) => (
+              <div key={i} className={`specialty-item ${item.offset}`}>
+                <div className="relative overflow-hidden group">
                   <img
-                    src={service.image}
-                    alt={service.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    src={item.img}
+                    alt={item.name}
+                    className="w-full aspect-[3/4] object-cover transition-transform duration-700 group-hover:scale-110"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-wood-dark)]/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                    <p className="text-[var(--color-cream)] font-heading text-lg">{item.name}</p>
+                  </div>
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-wood-dark via-wood-dark/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 className="font-heading text-2xl text-cream mb-2">{service.title}</h3>
-                  <p className="text-cream/80 text-sm">{service.description}</p>
-                  <span className="inline-flex items-center gap-2 text-gold mt-4 font-medium text-sm group-hover:gap-3 transition-all">
-                    Scopri di più
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                  </span>
-                </div>
-              </Link>
+              </div>
             ))}
           </div>
         </div>
-      </section>
 
-      {/* About Preview Section */}
-      <section className="relative py-24 md:py-32">
-        <div className="absolute inset-0">
-          <img
-            src={salaRistoranteCamino}
-            alt="Atmosfera del ristorante"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-wood-dark/80" />
-        </div>
-        <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
-          <p className="text-gold font-medium tracking-wider mb-2">— LA NOSTRA STORIA</p>
-          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl text-cream mb-6">
-            Tradizione e Passione dal Cuore della Valle
-          </h2>
-          <div className="decorative-line mb-8" />
-          <p className="text-cream/80 text-lg leading-relaxed mb-8">
-            Fondata con l'amore per la tradizione e la cucina di qualità, La Vecchia Lanterna
-            ha radici profonde nella comunità locale. Il nostro impegno per l'eccellenza si
-            riflette nella varietà dei nostri servizi e nella cura di ogni singolo piatto.
-          </p>
-          <Link
-            to="/chi-siamo"
-            className="inline-block bg-gold hover:bg-gold/90 text-wood-dark px-8 py-4 rounded-lg font-semibold transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
-          >
-            Scopri di Più
+        <div className="text-center mt-16">
+          <Link to="/menu" className="btn-creative">
+            Scopri il Menu Completo
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
           </Link>
         </div>
       </section>
 
-      {/* Specialties Section */}
-      <section className="section-padding bg-cream">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <p className="text-gold font-medium tracking-wider mb-2">— DAL NOSTRO MENU</p>
-            <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl text-wood-dark mb-4">
-              Le Nostre Specialità
-            </h2>
-            <div className="decorative-line mb-6" />
-          </div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {specialties.map((item, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-xl overflow-hidden shadow-md card-hover"
-              >
-                <div className="aspect-square">
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="p-4">
-                  <h3 className="font-heading text-lg text-wood-dark mb-1">{item.name}</h3>
-                  <p className="text-coffee/70 text-sm">{item.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center mt-10">
-            <Link
-              to="/menu"
-              className="inline-block bg-wine hover:bg-wine-dark text-cream px-8 py-4 rounded-lg font-semibold transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
-            >
-              Scopri il Menu Completo
-            </Link>
-          </div>
+      {/* REVIEWS - Creative testimonials section */}
+      <section className="relative section-spacing bg-[var(--color-wood-dark)] overflow-hidden">
+        {/* Large decorative quote */}
+        <div className="absolute top-12 left-[5vw] text-[30vw] leading-none font-accent text-[var(--color-cream)]/[0.03] pointer-events-none select-none">
+          "
         </div>
-      </section>
 
-      {/* Reviews Section */}
-      <section className="section-padding bg-ivory">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <p className="text-gold font-medium tracking-wider mb-2">— TESTIMONIANZE</p>
-            <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl text-wood-dark mb-4">
-              Cosa Dicono i Nostri Clienti
-            </h2>
-            <div className="decorative-line mb-6" />
-            <div className="flex justify-center items-center gap-2 text-gold">
-              {[...Array(5)].map((_, i) => (
-                <svg key={i} className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                </svg>
-              ))}
-              <span className="ml-2 text-coffee font-medium">4.8 su Facebook</span>
+        <div className="relative z-10 px-6 md:px-12">
+          {/* Header - asymmetric */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16 md:mb-24">
+            <div className="lg:col-span-5">
+              <p className="text-[var(--color-gold)] text-xs uppercase tracking-[0.3em] mb-4">
+                — Le Voci dei Nostri Ospiti
+              </p>
+              <h2 className="text-display text-[var(--color-cream)]">
+                Esperienze<br />
+                <span className="ml-8 text-[var(--color-gold)]">Autentiche</span>
+              </h2>
             </div>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            {reviews.map((review, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-xl p-6 shadow-md"
-              >
-                <div className="flex gap-1 text-gold mb-4">
-                  {[...Array(review.rating)].map((_, i) => (
-                    <svg key={i} className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <div className="lg:col-span-4 lg:col-start-8 lg:flex lg:items-end">
+              <div className="flex items-center gap-4">
+                <div className="text-right">
+                  <p className="text-[var(--color-gold)] font-accent text-5xl">4.8</p>
+                  <p className="text-[var(--color-cream)]/50 text-xs uppercase tracking-wider">su TripAdvisor</p>
+                </div>
+                <div className="flex gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} className="w-5 h-5 text-[var(--color-gold)]" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                     </svg>
                   ))}
                 </div>
-                <p className="text-coffee/80 italic mb-4">"{review.text}"</p>
-                <div className="flex justify-between items-center">
-                  <p className="font-medium text-wood-dark">{review.author}</p>
-                  <span className="text-sm text-coffee/60">{review.source}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Reviews grid - broken masonry style */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
+            {/* Main featured review */}
+            <div className="md:col-span-7 relative group">
+              <div className="bg-[var(--color-cream)] p-8 md:p-12 relative overflow-hidden" style={{ transform: 'rotate(-1deg)' }}>
+                {/* Corner accent */}
+                <div className="absolute top-0 right-0 w-24 h-24 bg-[var(--color-gold)]" style={{ clipPath: 'polygon(100% 0, 0 0, 100% 100%)' }} />
+
+                <div className="relative">
+                  <svg className="w-12 h-12 text-[var(--color-gold)]/30 mb-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+                  </svg>
+
+                  <p className="text-[var(--color-coffee)] text-xl md:text-2xl leading-relaxed mb-8 font-light">
+                    {reviews[0].text}
+                  </p>
+
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-[var(--color-wood-dark)] flex items-center justify-center text-[var(--color-cream)] font-heading text-lg">
+                      {reviews[0].author.charAt(0)}
+                    </div>
+                    <div>
+                      <p className="text-[var(--color-wood-dark)] font-medium">{reviews[0].author}</p>
+                      <div className="flex gap-0.5 mt-1">
+                        {[...Array(reviews[0].rating)].map((_, j) => (
+                          <svg key={j} className="w-3 h-3 text-[var(--color-gold)]" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                          </svg>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            ))}
+            </div>
+
+            {/* Side reviews - stacked */}
+            <div className="md:col-span-5 flex flex-col gap-6">
+              {reviews.slice(1).map((review, i) => (
+                <div
+                  key={i}
+                  className="bg-[var(--color-ivory)] p-6 md:p-8 border-l-4 border-[var(--color-gold)] hover:bg-[var(--color-cream)] transition-colors duration-500"
+                  style={{ marginLeft: `${i * 20}px`, transform: `rotate(${i % 2 === 0 ? 0.5 : -0.5}deg)` }}
+                >
+                  <p className="text-[var(--color-coffee)]/80 italic mb-4 leading-relaxed">
+                    "{review.text}"
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <p className="text-[var(--color-wood-dark)] font-medium text-sm">{review.author}</p>
+                    <div className="flex gap-0.5">
+                      {[...Array(review.rating)].map((_, j) => (
+                        <svg key={j} className="w-3 h-3 text-[var(--color-gold)]" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {/* TripAdvisor CTA */}
+              <a
+                href="https://www.tripadvisor.it/Restaurant_Review-g1813852-d26768460-Reviews-La_Vecchia_Lanterna-Temu_Province_of_Brescia_Lombardy.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-4 p-6 border border-[var(--color-cream)]/20 hover:border-[var(--color-gold)] transition-colors duration-500"
+                style={{ marginLeft: '40px' }}
+              >
+                <div className="w-12 h-12 bg-[#00AF87] flex items-center justify-center text-white flex-shrink-0">
+                  <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12.006 4.295c-2.67 0-5.338.784-7.645 2.353H0l1.963 2.135a5.997 5.997 0 004.04 10.43 5.976 5.976 0 004.075-1.6L12 19.705l1.922-2.09a5.972 5.972 0 004.072 1.598 6 6 0 004.04-10.43l1.966-2.135h-4.358c-2.31-1.57-4.98-2.353-7.636-2.353zM6.003 17.212a3.992 3.992 0 01-4-3.997 4 4 0 014-3.998 3.994 3.994 0 014 3.998 4 4 0 01-4 3.997zm11.997 0a3.994 3.994 0 01-4-3.997 4 4 0 014-3.998 3.992 3.992 0 014 3.998 4 4 0 01-4 3.997z"/>
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <p className="text-[var(--color-cream)] font-medium group-hover:text-[var(--color-gold)] transition-colors">Leggi tutte le recensioni</p>
+                  <p className="text-[var(--color-cream)]/50 text-xs">su TripAdvisor</p>
+                </div>
+                <svg className="w-5 h-5 text-[var(--color-cream)]/50 group-hover:text-[var(--color-gold)] group-hover:translate-x-2 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </a>
+            </div>
           </div>
         </div>
+
+        {/* Bottom decorative line */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--color-gold)]/30 to-transparent" />
       </section>
 
-      {/* CTA Section */}
-      <section className="relative py-20 md:py-28">
+      {/* CTA - Full bleed with broken elements */}
+      <section className="relative h-[80vh] flex items-center overflow-hidden">
         <div className="absolute inset-0">
           <img
             src={salaPietra}
-            alt="Prenota al ristorante"
+            alt="Prenota"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-wood-dark/85" />
+          <div className="absolute inset-0 bg-[var(--color-wood-dark)]/80" />
         </div>
-        <div className="relative z-10 max-w-3xl mx-auto px-4 text-center">
-          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl text-cream mb-6">
-            Prenota il Tuo Tavolo
-          </h2>
-          <p className="text-cream/80 text-lg mb-8">
-            Ti aspettiamo a braccia aperte per deliziarti con i nostri piatti
-            e creare ricordi indimenticabili insieme alla tua famiglia e ai tuoi amici.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="https://www.bookta.it/pizzerialavecchialanternaditemu"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-wine hover:bg-wine-dark text-cream px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
-            >
-              Prenota Online
-            </a>
-            <a
-              href="tel:+393792102615"
-              className="bg-cream/10 backdrop-blur-sm border-2 border-cream/50 hover:bg-cream hover:text-wood-dark text-cream px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300 flex items-center justify-center gap-2"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-              </svg>
-              Chiama Ora
-            </a>
+
+        <div className="relative z-10 px-6 md:px-12 w-full">
+          <div className="max-w-3xl ml-auto mr-[10vw]">
+            <h2 className="text-hero text-[var(--color-cream)] mb-6 text-right">
+              Prenota il<br />
+              <span className="text-[var(--color-gold)]">tuo tavolo</span>
+            </h2>
+            <p className="text-[var(--color-cream)]/60 text-body-lg text-right mb-10 max-w-md ml-auto">
+              Ti aspettiamo a braccia aperte per creare ricordi indimenticabili.
+            </p>
+            <div className="flex flex-wrap gap-4 justify-end">
+              <a
+                href="https://www.bookta.it/pizzerialavecchialanternaditemu"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-creative"
+              >
+                Prenota Online
+              </a>
+              <a href="tel:+393792102615" className="btn-outline border-[var(--color-cream)]/30 text-[var(--color-cream)] hover:bg-[var(--color-cream)] hover:text-[var(--color-wood-dark)]">
+                Chiama Ora
+              </a>
+            </div>
           </div>
-          <p className="text-cream/60 text-sm mt-6">
-            Accettiamo prenotazioni telefoniche e online
+        </div>
+
+        {/* Decorative large text */}
+        <div className="absolute bottom-0 left-0 pointer-events-none">
+          <p className="text-[25vw] font-heading text-[var(--color-cream)]/5 uppercase leading-none translate-y-[30%]">
+            Temù
           </p>
         </div>
       </section>
 
-      {/* Map Section */}
-      <section className="section-padding bg-cream">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <p className="text-gold font-medium tracking-wider mb-2">— DOVE SIAMO</p>
-            <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl text-wood-dark mb-4">
-              Vieni a Trovarci
+      {/* MAP - Broken layout */}
+      <section className="section-spacing px-6 md:px-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          <div className="lg:col-span-4 lg:col-start-1">
+            <p className="text-[var(--color-gold)] text-xs uppercase tracking-[0.3em] mb-4">
+              — Dove Siamo
+            </p>
+            <h2 className="text-title text-[var(--color-wood-dark)] mb-6">
+              Vieni a<br />trovarci
             </h2>
-            <div className="decorative-line mb-6" />
+            <div className="space-y-4 text-[var(--color-coffee)]/70">
+              <p>
+                <strong className="text-[var(--color-wood-dark)]">Via Roma, 55</strong><br />
+                25050 Temù (BS)
+              </p>
+              <p>
+                A pochi minuti da Ponte di Legno<br />
+                e dal Passo del Tonale
+              </p>
+            </div>
+            <a
+              href="https://maps.google.com/?q=Via+Roma+55+Temù"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 mt-6 text-[var(--color-wine)] font-medium hover:gap-4 transition-all"
+            >
+              Indicazioni
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8 items-start">
-            <div className="lg:col-span-2">
-              <div className="rounded-2xl overflow-hidden shadow-lg h-[400px]">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2765.8963071731706!2d10.469044!3d46.248731!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4783456789abcdef%3A0x1234567890abcdef!2sVia%20Roma%2C%2055%2C%2025050%20Tem%C3%B9%20BS!5e0!3m2!1sit!2sit!4v1234567890123"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen=""
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="Mappa La Vecchia Lanterna di Temù"
-                />
-              </div>
-            </div>
-            <div className="bg-wood-dark text-cream rounded-2xl p-8">
-              <h3 className="font-heading text-2xl text-gold mb-6">Informazioni</h3>
-
-              <div className="space-y-6">
-                <div>
-                  <h4 className="font-medium text-cream mb-2">Indirizzo</h4>
-                  <p className="text-cream/70">
-                    Via Roma, 55<br />
-                    25050 Temù (BS)
-                  </p>
-                </div>
-
-                <div>
-                  <h4 className="font-medium text-cream mb-2">Come Raggiungerci</h4>
-                  <p className="text-cream/70 text-sm">
-                    Nel centro di Temù, sulla via principale. A pochi minuti da
-                    Ponte di Legno e dal Passo del Tonale.
-                  </p>
-                </div>
-
-                <div>
-                  <h4 className="font-medium text-cream mb-2">Orari</h4>
-                  <div className="text-cream/70 text-sm space-y-1">
-                    <p>Pranzo: 10:30 - 15:00</p>
-                    <p>Cena: 18:00 - 23:00</p>
-                    <p className="text-gold text-xs mt-2">Aperto tutti i giorni</p>
-                  </div>
-                </div>
-
-                <a
-                  href="https://maps.google.com/?q=Via+Roma+55+Temù"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-gold hover:bg-gold/90 text-wood-dark px-6 py-3 rounded-lg font-semibold transition-all duration-300 w-full justify-center"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  Indicazioni Stradali
-                </a>
-              </div>
+          <div className="lg:col-span-8 lg:col-start-5 lg:-mt-16">
+            <div className="relative overflow-hidden h-[400px] md:h-[500px]" style={{ transform: 'rotate(-1deg)' }}>
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2765.8963071731706!2d10.469044!3d46.248731!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDbCsDE0JzU1LjQiTiAxMMKwMjgnOC42IkU!5e0!3m2!1sit!2sit!4v1234567890"
+                width="100%"
+                height="100%"
+                style={{ border: 0, filter: 'grayscale(30%) contrast(1.1)' }}
+                allowFullScreen=""
+                loading="lazy"
+                title="Mappa"
+              />
             </div>
           </div>
         </div>

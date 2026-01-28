@@ -1,5 +1,6 @@
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
+import { useLenis } from './hooks/useLenis'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import Home from './pages/Home'
@@ -19,8 +20,10 @@ function ScrollToTop() {
 }
 
 function App() {
+  useLenis()
+
   return (
-    <div className="min-h-screen flex flex-col bg-cream">
+    <div className="min-h-screen flex flex-col">
       <ScrollToTop />
       <Header />
       <main className="flex-grow">
