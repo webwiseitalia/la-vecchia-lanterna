@@ -5,7 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { motion } from 'framer-motion'
 import SplitType from 'split-type'
 
-import salaCamino from '../assets/foto/sala-camino-acceso.webp'
+import esternoRistorante from '../assets/foto/esterno-ristorante-inverno.webp'
 import salaPietra from '../assets/foto/sala-ristorante-pietra-legno.webp'
 import salaEventi from '../assets/foto/sala-eventi-gruppi.webp'
 import cervoPolenta from '../assets/foto/cervo-polenta-rosmarino.webp'
@@ -62,7 +62,7 @@ export default function ChiSiamo() {
       {/* HERO */}
       <section className="relative h-[70vh] md:h-[80vh] flex items-end overflow-hidden">
         <div className="absolute inset-0">
-          <img src={salaCamino} alt="La Vecchia Lanterna" className="w-full h-full object-cover" />
+          <img src={esternoRistorante} alt="La Vecchia Lanterna" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-wood-dark)] via-[var(--color-wood-dark)]/50 to-transparent" />
         </div>
         <div className="relative z-10 px-6 md:px-12 pb-16 md:pb-24 w-full">

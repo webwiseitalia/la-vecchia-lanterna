@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 import SplitType from 'split-type'
 
 import salaCamino from '../assets/foto/sala-camino-acceso.webp'
+import esternoRistorante from '../assets/foto/esterno-ristorante-inverno.webp'
 import salaPietra from '../assets/foto/sala-ristorante-pietra-legno.webp'
 import pizzaDiavola from '../assets/foto/pizza-diavola-salame.webp'
 import cervoPolenta from '../assets/foto/cervo-polenta-rosmarino.webp'
@@ -140,8 +141,8 @@ export default function Home() {
       <section ref={heroRef} className="relative h-screen overflow-hidden">
         <div className="hero-bg absolute inset-0">
           <img
-            src={salaCamino}
-            alt="La Vecchia Lanterna"
+            src={esternoRistorante}
+            alt="La Vecchia Lanterna - Esterno"
             className="w-full h-[120%] object-cover img-vintage"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-wood-dark)]/40 via-transparent to-[var(--color-wood-dark)]" />
@@ -189,10 +190,10 @@ export default function Home() {
             transition={{ delay: 1.8, duration: 1 }}
             className="mt-8 ml-auto mr-[5vw] max-w-md text-right"
           >
-            <p className="text-[var(--color-cream)]/70 text-body-lg">
+            <p className="text-[var(--color-cream)] text-body-lg">
               Ristorante • Pizzeria • Bar
             </p>
-            <p className="text-[var(--color-cream)]/50 text-sm mt-2">
+            <p className="text-[var(--color-cream)] text-sm mt-2">
               Alta Valle Camonica
             </p>
           </motion.div>
@@ -215,8 +216,12 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </a>
-            <Link to="/menu" className="btn-outline ml-8">
-              Menu
+            <Link to="/menu" className="group relative inline-flex items-center gap-3 px-8 py-4 border-2 border-[var(--color-cream)] text-[var(--color-cream)] font-semibold text-sm uppercase tracking-widest ml-8 overflow-hidden transition-all duration-500 hover:border-[var(--color-gold)]">
+              <span className="absolute inset-0 bg-[var(--color-gold)] transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" />
+              <span className="relative z-10 group-hover:text-[var(--color-wood-dark)] transition-colors duration-500">Menu</span>
+              <svg className="relative z-10 w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300 group-hover:text-[var(--color-wood-dark)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
             </Link>
           </motion.div>
         </div>
@@ -312,7 +317,7 @@ export default function Home() {
                 </h2>
               </div>
               <div className="lg:col-span-3 lg:col-start-10 lg:flex lg:items-end">
-                <p className="text-[var(--color-cream)]/50 text-sm leading-relaxed">
+                <p className="text-[var(--color-cream)] text-sm leading-relaxed">
                   Ogni servizio racconta la nostra passione per l'ospitalità e la tradizione della Valle Camonica.
                 </p>
               </div>
@@ -444,7 +449,7 @@ export default function Home() {
       <section className="marquee-section py-12 bg-[var(--color-wood-dark)] overflow-hidden">
         <div className="marquee-fast flex whitespace-nowrap">
           {[...Array(6)].map((_, i) => (
-            <span key={i} className="inline-flex items-center mx-8 text-[var(--color-cream)]/10 text-6xl md:text-8xl font-heading uppercase">
+            <span key={i} className="inline-flex items-center mx-8 text-[var(--color-cream)] text-6xl md:text-8xl font-heading uppercase">
               Pizzoccheri
               <span className="inline-block w-3 h-3 rounded-full bg-[var(--color-gold)] mx-8" />
               Cervo
@@ -478,7 +483,7 @@ export default function Home() {
               Tradizione<br />
               <span className="text-[var(--color-gold)]">&</span> Passione
             </h2>
-            <p className="text-[var(--color-cream)]/60 text-body-lg leading-relaxed max-w-lg mb-10">
+            <p className="text-[var(--color-cream)] text-body-lg leading-relaxed max-w-lg mb-10">
               Da generazioni, la nostra famiglia dedica impegno e passione per offrire
               piatti deliziosi in un'atmosfera accogliente. Ogni ricetta racconta
               la storia del nostro territorio.
@@ -560,7 +565,7 @@ export default function Home() {
               <div className="flex items-center gap-4">
                 <div className="text-right">
                   <p className="text-[var(--color-gold)] font-accent text-5xl">4.8</p>
-                  <p className="text-[var(--color-cream)]/50 text-xs uppercase tracking-wider">su TripAdvisor</p>
+                  <p className="text-[var(--color-cream)] text-xs uppercase tracking-wider">su TripAdvisor</p>
                 </div>
                 <div className="flex gap-1">
                   {[...Array(5)].map((_, i) => (

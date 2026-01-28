@@ -67,7 +67,7 @@ export default function Footer() {
                 <p className="text-[var(--color-gold)] font-accent text-xl">di Temù</p>
               </div>
             </div>
-            <p className="text-[var(--color-cream)]/50 text-body-lg max-w-md leading-relaxed">
+            <p className="text-[var(--color-cream)] text-body-lg max-w-md leading-relaxed">
               Un'osteria tradizionale nel cuore delle Alpi, dove ogni piatto racconta
               la storia della nostra valle.
             </p>
@@ -82,12 +82,11 @@ export default function Footer() {
               Navigazione
             </h4>
             <nav className="space-y-3">
-              {['Home', 'Chi Siamo', 'Menu', 'Galleria', 'Contatti'].map((item, i) => (
+              {['Home', 'Chi Siamo', 'Menu', 'Galleria', 'Contatti'].map((item) => (
                 <Link
                   key={item}
                   to={item === 'Home' ? '/' : `/${item.toLowerCase().replace(' ', '-')}`}
-                  className="block text-[var(--color-cream)]/70 hover:text-[var(--color-cream)] transition-colors text-sm"
-                  style={{ marginLeft: `${i * 8}px` }}
+                  className="block text-[var(--color-cream)] hover:text-[var(--color-gold)] transition-colors text-sm"
                 >
                   {item}
                 </Link>
@@ -102,18 +101,18 @@ export default function Footer() {
             </h4>
             <div className="space-y-4">
               <div>
-                <p className="text-[var(--color-cream)]/40 text-xs mb-1">Indirizzo</p>
+                <p className="text-[var(--color-cream)] text-xs mb-1">Indirizzo</p>
                 <p className="text-[var(--color-cream)]">Via Roma, 55</p>
                 <p className="text-[var(--color-cream)]">25050 Temù (BS)</p>
               </div>
               <div>
-                <p className="text-[var(--color-cream)]/40 text-xs mb-1">Telefono</p>
+                <p className="text-[var(--color-cream)] text-xs mb-1">Telefono</p>
                 <a href="tel:+393792102615" className="text-[var(--color-cream)] hover:text-[var(--color-gold)] transition-colors">
                   +39 379 210 2615
                 </a>
               </div>
               <div>
-                <p className="text-[var(--color-cream)]/40 text-xs mb-1">Orari</p>
+                <p className="text-[var(--color-cream)] text-xs mb-1">Orari</p>
                 <p className="text-[var(--color-cream)] text-sm">10:30–15:00 / 18:00–23:00</p>
               </div>
             </div>
@@ -126,55 +125,53 @@ export default function Footer() {
         {/* Bottom Section */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8 footer-reveal">
           {/* Social */}
-          <div className="flex gap-6">
-            <a
-              href="https://instagram.com/lavecchialanterna2023"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[var(--color-cream)]/40 hover:text-[var(--color-gold)] transition-colors text-sm uppercase tracking-widest"
-            >
-              Instagram
-            </a>
-            <a
-              href="https://facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[var(--color-cream)]/40 hover:text-[var(--color-gold)] transition-colors text-sm uppercase tracking-widest"
-            >
-              Facebook
-            </a>
-            <a
-              href="https://wa.me/393792102615"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[var(--color-cream)]/40 hover:text-[var(--color-gold)] transition-colors text-sm uppercase tracking-widest"
-            >
-              WhatsApp
-            </a>
+          <div>
+            <div className="flex gap-6 mb-4">
+              <a
+                href="https://instagram.com/lavecchialanterna2023"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[var(--color-cream)] hover:text-[var(--color-gold)] transition-colors text-sm uppercase tracking-widest"
+              >
+                Instagram
+              </a>
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[var(--color-cream)] hover:text-[var(--color-gold)] transition-colors text-sm uppercase tracking-widest"
+              >
+                Facebook
+              </a>
+              <a
+                href="https://wa.me/393792102615"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[var(--color-cream)] hover:text-[var(--color-gold)] transition-colors text-sm uppercase tracking-widest"
+              >
+                WhatsApp
+              </a>
+            </div>
+            <p className="text-[8vw] md:text-[5vw] font-heading text-[var(--color-cream)]/10 uppercase leading-none">
+              TEMÙ
+            </p>
           </div>
 
           {/* Copyright */}
           <div className="text-right">
-            <p className="text-[var(--color-cream)]/30 text-xs">
+            <p className="text-[var(--color-cream)] text-xs">
               © {currentYear} La Vecchia Lanterna di Temù
             </p>
             <div className="flex gap-4 mt-2 justify-end">
-              <Link to="/privacy-policy" className="text-[var(--color-cream)]/30 hover:text-[var(--color-cream)]/60 text-xs transition-colors">
+              <Link to="/privacy-policy" className="text-[var(--color-cream)] hover:text-[var(--color-gold)] text-xs transition-colors">
                 Privacy
               </Link>
-              <Link to="/cookie-policy" className="text-[var(--color-cream)]/30 hover:text-[var(--color-cream)]/60 text-xs transition-colors">
+              <Link to="/cookie-policy" className="text-[var(--color-cream)] hover:text-[var(--color-gold)] text-xs transition-colors">
                 Cookie
               </Link>
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Large decorative text */}
-      <div className="absolute bottom-0 left-0 right-0 overflow-hidden pointer-events-none">
-        <p className="text-[20vw] font-heading text-[var(--color-cream)]/[0.02] whitespace-nowrap translate-y-[40%]">
-          TEMÙ
-        </p>
       </div>
     </footer>
   )

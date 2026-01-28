@@ -1,6 +1,6 @@
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
-import { useLenis } from './hooks/useLenis'
+import { useLenis, scrollTo } from './hooks/useLenis'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import Home from './pages/Home'
@@ -13,6 +13,9 @@ function ScrollToTop() {
   const { pathname } = useLocation()
 
   useEffect(() => {
+    // Use Lenis scrollTo for smooth scroll, with instant option for page changes
+    scrollTo(0, { immediate: true })
+    // Fallback for when Lenis is not ready
     window.scrollTo(0, 0)
   }, [pathname])
 

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import SplitType from 'split-type'
 
 // Import all images
+import esternoRistorante from '../assets/foto/esterno-ristorante-inverno.webp'
 import salaPietra from '../assets/foto/sala-ristorante-pietra-legno.webp'
 import salaCamino from '../assets/foto/sala-camino-acceso.webp'
 import salaRistoranteCamino from '../assets/foto/sala-ristorante-camino.webp'
@@ -123,7 +124,7 @@ export default function Galleria() {
       {/* HERO - Asymmetric */}
       <section className="relative h-[60vh] md:h-[70vh] flex items-end overflow-hidden">
         <div className="absolute inset-0">
-          <img src={salaCamino} alt="La Vecchia Lanterna" className="w-full h-full object-cover" />
+          <img src={esternoRistorante} alt="La Vecchia Lanterna" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-wood-dark)] via-[var(--color-wood-dark)]/50 to-transparent" />
         </div>
 

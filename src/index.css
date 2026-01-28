@@ -299,6 +299,15 @@ h1, h2, h3, h4, h5, h6 {
   animation-play-state: paused;
 }
 
+.marquee-fast {
+  display: flex;
+  animation: marquee 20s linear infinite;
+}
+
+.marquee-fast:hover {
+  animation-play-state: paused;
+}
+
 /* Floating elements */
 @keyframes float-slow {
   0%, 100% { transform: translateY(0) rotate(0deg); }

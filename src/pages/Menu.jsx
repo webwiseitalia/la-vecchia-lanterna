@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { motion } from 'framer-motion'
 import SplitType from 'split-type'
 
+import esternoRistorante from '../assets/foto/esterno-ristorante-inverno.webp'
 import pizzaMargherita from '../assets/foto/pizza-margherita-bufala.webp'
 import pizzaDiavola from '../assets/foto/pizza-diavola-salame.webp'
 import pizzaRucola from '../assets/foto/pizza-rucola-pomodorini.webp'
@@ -111,7 +112,7 @@ export default function Menu() {
       {/* HERO */}
       <section className="relative h-[60vh] md:h-[70vh] flex items-end overflow-hidden">
         <div className="absolute inset-0">
-          <img src={pizzaMargherita} alt="Le nostre pizze" className="w-full h-full object-cover" />
+          <img src={esternoRistorante} alt="La Vecchia Lanterna" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-wood-dark)] via-[var(--color-wood-dark)]/60 to-[var(--color-wood-dark)]/20" />
         </div>
         <div className="relative z-10 px-6 md:px-12 pb-16 md:pb-24 w-full">

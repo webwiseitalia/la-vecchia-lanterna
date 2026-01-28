@@ -4,7 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { motion } from 'framer-motion'
 import SplitType from 'split-type'
 
-import salaCamino from '../assets/foto/sala-camino-acceso.webp'
+import esternoRistorante from '../assets/foto/esterno-ristorante-inverno.webp'
 import salaEventi from '../assets/foto/sala-eventi-gruppi.webp'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -117,14 +117,10 @@ export default function Contatti() {
       {/* HERO - Asymmetric with overlapping elements */}
       <section className="relative h-[60vh] md:h-[70vh] flex items-end overflow-hidden">
         <div className="absolute inset-0">
-          <img src={salaCamino} alt="La Vecchia Lanterna" className="w-full h-full object-cover" />
+          <img src={esternoRistorante} alt="La Vecchia Lanterna" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-wood-dark)] via-[var(--color-wood-dark)]/70 to-transparent" />
         </div>
 
-        {/* Decorative large text */}
-        <div className="absolute top-[20vh] right-[-5vw] text-[var(--color-cream)]/5 text-[20vw] font-heading leading-none pointer-events-none">
-          TEMÙ
-        </div>
 
         <div className="relative z-10 px-6 md:px-12 pb-16 md:pb-24 w-full">
           <motion.p
